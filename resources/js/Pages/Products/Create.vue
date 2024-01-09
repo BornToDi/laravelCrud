@@ -25,7 +25,7 @@ const form = useForm({
     user_id: "",
 });
 
-const selectedUser = ref(null);
+//const selectedUser = ref(null);
 
 const submit = () => {
     form.post(route("products.store"));
