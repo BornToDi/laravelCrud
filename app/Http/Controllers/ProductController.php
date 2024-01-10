@@ -16,11 +16,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-
+        $users = User::all();
         return Inertia::render(
             'Products/Index',
             [
-                'products' => $products
+                'products' => $products,
+                'users' => $users
             ]
         );
     }

@@ -1,48 +1,27 @@
 <script setup>
-import { defineProps, ref } from 'vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import { ref } from 'vue';
 import TextInput from "@/Components/TextInput.vue";
-import Secondary from "@/Components/Secondary.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
-import { Head, useForm } from "@inertiajs/vue3";
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import { useForm } from "@inertiajs/vue3";
 
-const props = defineProps({
-    products: {
-        type: Object,
-        default: () => ({}),
-    },
-    users: {
-        type: Array,
-        default: () => [],
-    },
-});
+const props = defineProps(["users"]);
 
 const form = useForm({
-    title: "",
-    description: "",
-    price: "",
-    user_id: "",
+  title: "",
+  description: "",
+  price: "",
+  user_id: "",
 });
 
-//const selectedUser = ref(null);
-
 const submit = () => {
-    form.post(route("products.store"));
+  form.post(route("products.store"));
 };
-
 </script>
 
 <template>
-    <Head title="Product Create" />
 
-    <AppLayout>
-      <template #header>
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-          Product Create
-        </h2>
-      </template>
 
       <div class="py-12">
         <div class="mx-auto max-w-7xl">
@@ -152,6 +131,6 @@ const submit = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+
   </template>
 
