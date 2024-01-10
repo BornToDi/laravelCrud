@@ -4,8 +4,10 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import CreatePart from '@/Components/CreatePart.vue';
+import EditPart from '@/Components/EditPart.vue';
 
 import { defineProps, ref } from 'vue';
+
 const props = defineProps({
     products: {
         type: Object,
@@ -16,6 +18,7 @@ const props = defineProps({
         default: () => [],
     },
 });
+
 const form = useForm({});
 
 function destroy(id) {
@@ -23,17 +26,26 @@ function destroy(id) {
         form.delete(route("products.destroy", id));
     }
 }
+
 //popup part
 const showAddProductModal = ref(false);
 const openAddProductModal = () => {
     showAddProductModal.value = true;
   };
-
-  const closeAddProductModal = () => {
+const closeAddProductModal = () => {
     showAddProductModal.value = false;
   };
-  //popup part done
-  //submit
+//edit part
+const EditModal = ref(false);
+const openEditModal = () => {
+    EditModal.value = true;
+}
+  const closeAddProductModal2 = () => {
+    EditModal.value = false;
+};
+//popup part done
+
+
 
 </script>
 
@@ -91,9 +103,9 @@ const openAddProductModal = () => {
                 </Link>
             </td>
             <td class="px-6 py-4 ">
-                <Link :href="route('products.edit', product.id)">
-                    <PrimaryButton class="">Edit</PrimaryButton>
-                </Link>
+                <!-- <Link :href="route('products.edit', product.id)">
+                </Link> -->
+                <PrimaryButton @click="openEditModal" >Edit</PrimaryButton>
             </td>
             <td class="px-6 py-4 ">
                 <PrimaryButton class="" @click="destroy(product.id)">
@@ -109,7 +121,7 @@ const openAddProductModal = () => {
             </div>
         </div>
 
-         <!-- Modal -->
+         <!--add Modal -->
     <div v-if="showAddProductModal" class="fixed inset-0 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <!-- Background overlay -->
@@ -131,5 +143,20 @@ const openAddProductModal = () => {
         </div>
       </div>
     </div>
+
+<!--edit modal-->
+<div v-if="EditModal" class="fixed inset-0 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <EditPart />
+        <button @click="closeAddProductModal2" class="absolute top-0 right-0 p-2 m-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700">
+          close
+        </button>
+      </div>
+    </div>
+  </div>
     </AppLayout>
 </template>

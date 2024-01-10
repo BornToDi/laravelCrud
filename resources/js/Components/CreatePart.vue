@@ -1,12 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import TextInput from "@/Components/TextInput.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import { useForm } from "@inertiajs/vue3";
 
-const props = defineProps(["users"]);
+const props = defineProps(["users", "editProduct"]);
 
 const form = useForm({
   title: "",
@@ -16,8 +16,23 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.post(route("products.store"));
+  if (props.editProduct) {
+    form.put(route("products.update", props.editProduct.id));
+  } else {
+    form.post(route("products.store"));
+  }
 };
+
+watchEffect(() => {
+  if (props.editProduct) {
+    form.setData({
+      title: props.editProduct.title,
+      description: props.editProduct.description,
+      price: props.editProduct.price,
+      user_id: props.editProduct.user_id,
+    });
+  }
+});
 </script>
 
 <template>
@@ -116,15 +131,10 @@ const submit = () => {
                 </div>
 
 
-                <Secondary
-
-                  type="submit"
-                  :class="{ 'opacity-25': form.processing } "
-                  :disabled="form.processing"
-                  class="ml-auto pt-10"
-                >
-                  Submit
-                </Secondary>
+                <!-- Submit button -->
+                <SecondaryButton type="submit" :class="{ 'opacity-25': form.processing } " :disabled="form.processing" class="ml-auto pt-10">
+                    {{ props.editProduct ? 'Update' : 'Submit' }}
+                </SecondaryButton>
 
               </form>
             </div>
